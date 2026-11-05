@@ -1,5 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { buildLanding } from "./landing-content";
+import { getPublicPricing } from "./checkout.functions";
 
 export type Block =
   | { type: "text"; body: string }
@@ -29,15 +31,18 @@ export const landingQuery = queryOptions({
       supabase.rpc("lesson_outline"),
     ]);
     const map: Record<string, unknown> = Object.fromEntries((settings.data ?? []).map((s) => [s.key, s.value]));
-    return {
-      hero: (map["hero"] ?? null) as Hero | null,
-      faq: (map["faq"] ?? []) as Faq,
-      support: (map["support"] ?? null) as Support | null,
+    return buildLanding(map, {
       plans: plans.data ?? [],
-      modules: modules.data ?? [],
+      modules: (modules.data ?? []).filter((m) => m.published),
       outline: outline.data ?? [],
-    };
+    });
   },
+});
+
+export const publicPricingQuery = queryOptions({
+  queryKey: ["public-pricing"],
+  queryFn: () => getPublicPricing(),
+  staleTime: 60_000,
 });
 
 export const studentQuery = queryOptions({
