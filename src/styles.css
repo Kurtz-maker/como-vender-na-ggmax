@@ -141,3 +141,9 @@
   background-clip: text;
   color: transparent;
 }
+
+/* Accent colors chosen by the owner in the admin panel (Personalização → Cor de destaque). */
+[data-accent="blue"] { --primary: oklch(0.74 0.16 240); --ring: oklch(0.74 0.16 240); --accent: oklch(0.26 0.04 240); --accent-foreground: oklch(0.9 0.08 240); }
+[data-accent="violet"] { --primary: oklch(0.74 0.17 295); --ring: oklch(0.74 0.17 295); --accent: oklch(0.26 0.05 295); --accent-foreground: oklch(0.9 0.08 295); }
+[data-accent="orange"] { --primary: oklch(0.8 0.16 60); --ring: oklch(0.8 0.16 60); --accent: oklch(0.27 0.05 60); --accent-foreground: oklch(0.92 0.08 60); }
+[data-accent="pink"] { --primary: oklch(0.76 0.18 350); --ring: oklch(0.76 0.18 350); --accent: oklch(0.27 0.05 350); --accent-foreground: oklch(0.92 0.08 350); }
