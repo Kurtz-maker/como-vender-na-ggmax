@@ -32,9 +32,9 @@ function GatewayCard({ gateway, status, others }: { gateway: Gateway; status: St
   };
 
   async function setActive(active: boolean) {
-    if (active && !status?.hasAccessToken) return toast.error("Cadastre a chave de acesso antes de ativar.");
+    if (active && !status?.hasAccessToken) { toast.error("Cadastre a chave de acesso antes de ativar."); return; }
     const { error } = await supabase.from("payment_gateways").update({ active, updated_at: new Date().toISOString() }).eq("id", gateway.id);
-    if (error) return toast.error("Não foi possível alterar o gateway.");
+    if (error) { toast.error("Não foi possível alterar o gateway."); return; }
     if (active) {
       const ids = others.filter((o) => o.provider === gateway.provider && o.active).map((o) => o.id);
       if (ids.length) await supabase.from("payment_gateways").update({ active: false }).in("id", ids);
@@ -48,14 +48,14 @@ function GatewayCard({ gateway, status, others }: { gateway: Gateway; status: St
     setBusy("label");
     const { error } = await supabase.from("payment_gateways").update({ label: label.trim() || gateway.label, updated_at: new Date().toISOString() }).eq("id", gateway.id);
     setBusy("");
-    if (error) return toast.error("Não foi possível salvar.");
+    if (error) { toast.error("Não foi possível salvar."); return; }
     await audit("gateway_update", "payment_gateway", gateway.id, { label });
     toast.success("Nome salvo.");
     refresh();
   }
 
   async function saveCredentials() {
-    if (!token.trim() && !secret.trim()) return toast.error("Preencha pelo menos um campo.");
+    if (!token.trim() && !secret.trim()) { toast.error("Preencha pelo menos um campo."); return; }
     setBusy("creds");
     try {
       await saveCreds({ data: { gatewayId: gateway.id, accessToken: token.trim() || undefined, webhookSecret: secret.trim() || undefined } });
@@ -86,7 +86,7 @@ function GatewayCard({ gateway, status, others }: { gateway: Gateway; status: St
   async function remove() {
     if (!confirm(`Excluir o gateway "${gateway.label}" e as credenciais salvas?`)) return;
     const { error } = await supabase.from("payment_gateways").delete().eq("id", gateway.id);
-    if (error) return toast.error("Não foi possível excluir.");
+    if (error) { toast.error("Não foi possível excluir."); return; }
     await audit("gateway_delete", "payment_gateway", gateway.id, { label: gateway.label });
     refresh();
   }
@@ -134,7 +134,7 @@ function GatewayCard({ gateway, status, others }: { gateway: Gateway; status: St
         <div className="space-y-4">
           <div className="space-y-2 rounded-xl border border-border p-4">
             <p className="text-sm font-semibold">Webhook de confirmação</p>
-            <p className="text-xs text-muted-foreground">No Mercado Pago, vá em Suas integrações → sua aplicação → Webhooks, cole este endereço, marque o evento "Pagamentos" e copie a assinatura secreta para o campo ao lado.</p>
+            <p className="text-xs text-muted-foreground">No Mercado Pago, vá em Suas integrações → sua aplicação → Webhooks, cole este endereço, marque o evento "Pagamentos" e copie a assinatura secreta para o campo ao lado. Copie o endereço com o painel aberto no site publicado, não na prévia.</p>
             <div className="flex gap-2">
               <Input readOnly value={webhookUrl} className="font-mono text-xs" />
               <Button size="icon" variant="glass" aria-label="Copiar endereço" onClick={() => { navigator.clipboard.writeText(webhookUrl); toast.success("Endereço copiado"); }}><Copy /></Button>
@@ -161,7 +161,7 @@ export function GatewaysManager({ gateways }: { gateways: Gateway[] }) {
 
   async function add() {
     const { data, error } = await supabase.from("payment_gateways").insert({ provider: "mercadopago", label: label.trim() || "Mercado Pago", active: false }).select("id").single();
-    if (error) return toast.error("Não foi possível adicionar o gateway.");
+    if (error) { toast.error("Não foi possível adicionar o gateway."); return; }
     await audit("gateway_create", "payment_gateway", data.id, { provider: "mercadopago" });
     setAdding(false);
     toast.success("Gateway adicionado. Agora cadastre as credenciais.");

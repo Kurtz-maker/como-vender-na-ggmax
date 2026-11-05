@@ -41,10 +41,10 @@ function PlanCard({ plan, others }: { plan: Plan; others: Plan[] }) {
   async function save() {
     const price = parseMoney(f.price);
     const promo = parseMoney(f.promo);
-    if (!f.name.trim()) return toast.error("Informe o nome do plano.");
-    if (price == null || price < 100) return toast.error("Informe um preço de pelo menos R$ 1,00.");
-    if (promo != null && (promo < 100 || promo >= price)) return toast.error("O preço promocional deve ser menor que o preço normal e de pelo menos R$ 1,00.");
-    if (f.promoStart && f.promoEnd && new Date(f.promoEnd) <= new Date(f.promoStart)) return toast.error("O fim da promoção deve ser depois do início.");
+    if (!f.name.trim()) { toast.error("Informe o nome do plano."); return; }
+    if (price == null || price < 100) { toast.error("Informe um preço de pelo menos R$ 1,00."); return; }
+    if (promo != null && (promo < 100 || promo >= price)) { toast.error("O preço promocional deve ser menor que o preço normal e de pelo menos R$ 1,00."); return; }
+    if (f.promoStart && f.promoEnd && new Date(f.promoEnd) <= new Date(f.promoStart)) { toast.error("O fim da promoção deve ser depois do início."); return; }
     setSaving(true);
     const row = {
       name: f.name.trim(), description: f.description.trim() || null, price_cents: price, promo_price_cents: promo,
@@ -56,7 +56,7 @@ function PlanCard({ plan, others }: { plan: Plan; others: Plan[] }) {
     const { error } = await supabase.from("plans").update(row).eq("slug", plan.slug);
     if (!error && f.featured) await supabase.from("plans").update({ featured: false }).neq("slug", plan.slug);
     setSaving(false);
-    if (error) return toast.error("Não foi possível salvar o plano.");
+    if (error) { toast.error("Não foi possível salvar o plano."); return; }
     await audit("plan_update", "plan", plan.slug, {
       price: { from: plan.price_cents, to: price }, promo: { from: plan.promo_price_cents, to: promo }, active: f.active, featured: f.featured,
     });
@@ -114,7 +114,7 @@ export function PlansManager({ plans }: { plans: Plan[] }) {
   async function create(slug: "basic" | "pro") {
     const label = TIERS.find((t) => t.slug === slug)!.label;
     const { error } = await supabase.from("plans").insert({ slug, name: label, active: false, features: [] });
-    if (error) return toast.error("Não foi possível criar o plano.");
+    if (error) { toast.error("Não foi possível criar o plano."); return; }
     await audit("plan_create", "plan", slug, {});
     toast.success(`Plano ${label} criado (inativo). Defina o preço e ative quando quiser.`);
     qc.invalidateQueries({ queryKey: ["admin-data"] });

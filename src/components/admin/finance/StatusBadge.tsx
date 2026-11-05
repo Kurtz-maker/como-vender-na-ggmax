@@ -13,7 +13,7 @@ const tone: Record<string, string> = {
 
 export function StatusBadge({ status }: { status: string }) {
   return (
-    <span className={cn("inline-flex whitespace-nowrap rounded-full border px-2 py-0.5 text-xs font-medium", tone[status] ?? tone.canceled)}>
+    <span className={cn("inline-flex whitespace-nowrap rounded-full border px-2 py-0.5 text-xs font-medium", tone[status] ?? tone["canceled"])}>
       {STATUS_LABEL[status] ?? status}
     </span>
   );

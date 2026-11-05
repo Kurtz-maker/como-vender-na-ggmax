@@ -20,10 +20,10 @@ export function LandingView({
   preview = false,
 }: {
   data: LandingData;
-  prices?: Record<string, PublicPrice>;
+  prices?: Record<string, PublicPrice> | undefined;
   signed: boolean;
-  onBuy?: (plan: PlanRow) => void;
-  preview?: boolean;
+  onBuy?: ((plan: PlanRow) => void) | undefined;
+  preview?: boolean | undefined;
 }) {
   const { hero, texts, outline, banner } = data;
 
@@ -84,7 +84,7 @@ export function LandingView({
             <p className="mb-8 text-center font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">{texts.journey_title}</p>
             <ol className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
               {texts.journey.map((label, i) => {
-                const Icon = journeyIcons[i % journeyIcons.length];
+                const Icon = journeyIcons[i % journeyIcons.length]!;
                 return (
                   <li key={i} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-background p-4 text-center text-sm transition hover:border-primary/60">
                     <span className="font-mono text-[10px] text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
@@ -151,7 +151,7 @@ export function LandingView({
           <h2 className="text-3xl font-bold md:text-4xl">{texts.benefits_title}</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {texts.benefits.map((b, i) => {
-              const Icon = benefitIcons[i % benefitIcons.length];
+              const Icon = benefitIcons[i % benefitIcons.length]!;
               return (
                 <div key={i} className="card-surface p-6">
                   <Icon className="size-6 text-primary" />

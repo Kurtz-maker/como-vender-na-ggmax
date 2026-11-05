@@ -64,7 +64,7 @@ export function BuyDialog({ plan, signed, onOpenChange }: { plan: PlanRow | null
 
   async function pay() {
     if (!plan) return;
-    if (name.trim().length < 2) return toast.error("Informe seu nome completo.");
+    if (name.trim().length < 2) { toast.error("Informe seu nome completo."); return; }
     setPaying(true);
     try {
       const r = await checkoutFn({ data: { plan: plan.slug, coupon: applied, name: name.trim(), phone: phone.trim() || undefined } });

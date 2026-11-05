@@ -16,6 +16,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAlunoRouteImport } from './routes/_authenticated/aluno'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminFinancasRouteImport } from './routes/_authenticated/admin.financas'
+import { Route as AuthenticatedAdminPersonalizacaoRouteImport } from './routes/_authenticated/admin.personalizacao'
 import { Route as ApiPublicAssetSplatRouteImport } from './routes/api/public/asset/$'
 import { Route as ApiPublicWebhooksMercadopagoRouteImport } from './routes/api/public/webhooks/mercadopago'
 
@@ -54,6 +55,12 @@ const AuthenticatedAdminFinancasRoute =
     path: '/financas',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminPersonalizacaoRoute =
+  AuthenticatedAdminPersonalizacaoRouteImport.update({
+    id: '/personalizacao',
+    path: '/personalizacao',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const ApiPublicAssetSplatRoute = ApiPublicAssetSplatRouteImport.update({
   id: '/api/public/asset/$',
   path: '/api/public/asset/$',
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/aluno': typeof AuthenticatedAlunoRoute
   '/admin/financas': typeof AuthenticatedAdminFinancasRoute
+  '/admin/personalizacao': typeof AuthenticatedAdminPersonalizacaoRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/api/public/asset/$': typeof ApiPublicAssetSplatRoute
   '/api/public/webhooks/mercadopago': typeof ApiPublicWebhooksMercadopagoRoute
@@ -81,6 +89,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/aluno': typeof AuthenticatedAlunoRoute
   '/admin/financas': typeof AuthenticatedAdminFinancasRoute
+  '/admin/personalizacao': typeof AuthenticatedAdminPersonalizacaoRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/api/public/asset/$': typeof ApiPublicAssetSplatRoute
   '/api/public/webhooks/mercadopago': typeof ApiPublicWebhooksMercadopagoRoute
@@ -93,6 +102,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/aluno': typeof AuthenticatedAlunoRoute
   '/_authenticated/admin/financas': typeof AuthenticatedAdminFinancasRoute
+  '/_authenticated/admin/personalizacao': typeof AuthenticatedAdminPersonalizacaoRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/api/public/asset/$': typeof ApiPublicAssetSplatRoute
   '/api/public/webhooks/mercadopago': typeof ApiPublicWebhooksMercadopagoRoute
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aluno'
     | '/admin/financas'
+    | '/admin/personalizacao'
     | '/admin/'
     | '/api/public/asset/$'
     | '/api/public/webhooks/mercadopago'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/aluno'
     | '/admin/financas'
+    | '/admin/personalizacao'
     | '/admin'
     | '/api/public/asset/$'
     | '/api/public/webhooks/mercadopago'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/aluno'
     | '/_authenticated/admin/financas'
+    | '/_authenticated/admin/personalizacao'
     | '/_authenticated/admin/'
     | '/api/public/asset/$'
     | '/api/public/webhooks/mercadopago'
@@ -189,6 +202,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminFinancasRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/personalizacao': {
+      id: '/_authenticated/admin/personalizacao'
+      path: '/personalizacao'
+      fullPath: '/admin/personalizacao'
+      preLoaderRoute: typeof AuthenticatedAdminPersonalizacaoRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/api/public/asset/$': {
       id: '/api/public/asset/$'
       path: '/api/public/asset/$'
@@ -208,11 +228,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminFinancasRoute: typeof AuthenticatedAdminFinancasRoute
+  AuthenticatedAdminPersonalizacaoRoute: typeof AuthenticatedAdminPersonalizacaoRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminFinancasRoute: AuthenticatedAdminFinancasRoute,
+  AuthenticatedAdminPersonalizacaoRoute: AuthenticatedAdminPersonalizacaoRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 

@@ -66,7 +66,7 @@ export function SaleDetails({
 
   async function save() {
     if (!payment || !next) return;
-    if (reason.trim().length < 3) return toast.error("Explique o motivo da alteração.");
+    if (reason.trim().length < 3) { toast.error("Explique o motivo da alteração."); return; }
     setSaving(true);
     try {
       await setStatus({ data: { paymentId: payment.id, status: next as (typeof PAYMENT_STATUSES)[number], reason: reason.trim() } });

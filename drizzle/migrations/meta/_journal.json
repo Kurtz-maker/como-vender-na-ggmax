@@ -1,5 +1,20 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1793884813007,
+      "tag": "0000_admin_panel_support",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793885907262,
+      "tag": "0001_auth_user_triggers",
+      "breakpoints": true
+    }
+  ]
 }

@@ -25,7 +25,10 @@ function Aluno() {
       <header className="border-b border-border/60">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5">
           <Logo />
+          <div className="flex gap-2">
+          {data.isAdmin && <Button variant="glass" size="sm" asChild><Link to="/admin">Painel</Link></Button>}
           <Button variant="glass" size="sm" onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth", replace: true }); }}>Sair</Button>
+          </div>
         </div>
       </header>
       <main className="mx-auto max-w-5xl space-y-8 px-5 py-10">
