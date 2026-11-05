@@ -5,14 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatPrice } from "@/lib/course";
-import { GATEWAY_LABEL, PAYMENT_STATUSES, STATUS_LABEL } from "@/lib/finance";
+import { GATEWAY_LABEL, PAYMENT_STATUSES, STATUS_LABEL, fmtDate } from "@/lib/finance";
 import type { Coupon, Payment, PaymentEvent, Plan } from "@/lib/admin";
 import { StatusBadge } from "./StatusBadge";
 import { SaleDetails } from "./SaleDetails";
 
 const ALL = "all";
-export const fmtDate = (d: string | null) =>
-  d ? new Date(d).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "—";
 
 export function SalesTable({ payments, events, coupons, plans }: { payments: Payment[]; events: PaymentEvent[]; coupons: Coupon[]; plans: Plan[] }) {
   const [from, setFrom] = useState("");

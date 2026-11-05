@@ -57,3 +57,27 @@ export function accessChange(previous: string | null, next: string): "grant" | "
   if (next === "refunded" || next === "canceled" || next === "rejected") return "revoke";
   return "none";
 }
+
+export const fmtDate = (d: string | null) =>
+  d ? new Date(d).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "—";
+
+/** "197,90" or "197.90" or "R$ 1.197,90" -> cents. Returns null for empty/invalid input. */
+export function parseMoney(input: string): number | null {
+  const s = input.replace(/[^\d,.-]/g, "").trim();
+  if (!s) return null;
+  const normalized = s.includes(",") ? s.replace(/\./g, "").replace(",", ".") : s;
+  const n = Number(normalized);
+  if (!Number.isFinite(n) || n < 0) return null;
+  return Math.round(n * 100);
+}
+
+export const centsToInput = (c: number | null | undefined) => (c == null ? "" : (c / 100).toFixed(2).replace(".", ","));
+
+/** ISO date <-> value of an <input type="datetime-local"> in the browser's timezone. */
+export const toLocalInput = (iso: string | null) => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+export const fromLocalInput = (v: string) => (v ? new Date(v).toISOString() : null);

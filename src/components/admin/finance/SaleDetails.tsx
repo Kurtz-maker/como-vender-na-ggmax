@@ -9,11 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { formatPrice } from "@/lib/course";
-import { GATEWAY_LABEL, PAYMENT_STATUSES, STATUS_LABEL } from "@/lib/finance";
+import { GATEWAY_LABEL, PAYMENT_STATUSES, STATUS_LABEL, fmtDate } from "@/lib/finance";
 import { setPaymentStatus } from "@/lib/admin.functions";
 import type { Coupon, Payment, PaymentEvent } from "@/lib/admin";
 import { StatusBadge } from "./StatusBadge";
-import { fmtDate } from "./SalesTable";
 
 const EVENT_LABEL: Record<string, string> = {
   checkout_created: "Checkout iniciado",
