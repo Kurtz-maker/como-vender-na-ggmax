@@ -27,9 +27,9 @@ const COUNTED = ["approved", "pending", "in_review"];
 export async function resolveQuote(planSlug: Plan, code: string | null, userId: string | null, now = new Date()) {
   const { data: plan } = await supabaseAdmin.from("plans").select("*").eq("slug", planSlug).eq("active", true).maybeSingle();
   if (!plan) return null;
-  let cq = supabaseAdmin.from("coupons").select("*").eq("active", true);
-  cq = code?.trim() ? cq.or(`automatic.eq.true,code.ilike.${code.trim().replace(/[,()*%]/g, "")}`) : cq.eq("automatic", true);
-  const { data: coupons } = await cq;
+  const wanted = code?.trim().toLowerCase() || null;
+  const { data: allCoupons } = await supabaseAdmin.from("coupons").select("*").eq("active", true);
+  const coupons = (allCoupons ?? []).filter((c) => c.automatic || (wanted && c.code.toLowerCase() === wanted));
   const usage: Record<string, CouponUsage> = {};
   for (const c of coupons ?? []) {
     const { count: total } = await supabaseAdmin.from("payments").select("id", { count: "exact", head: true }).eq("coupon_id", c.id).in("status", COUNTED);
