@@ -25,7 +25,7 @@ export const setPaymentStatus = createServerFn({ method: "POST" })
     const { data: payment } = await context.supabase.from("payments").select("*").eq("id", data.paymentId).maybeSingle();
     if (!payment) throw new Error("Pagamento não encontrado.");
     if (payment.status === data.status) return { ok: true, access: "none" };
-    const patch: Record<string, unknown> = { status: data.status, updated_at: new Date().toISOString() };
+    const patch: { status: string; updated_at: string; paid_at?: string } = { status: data.status, updated_at: new Date().toISOString() };
     if (data.status === "approved" && !payment.paid_at) patch.paid_at = new Date().toISOString();
     await context.supabase.from("payments").update(patch).eq("id", data.paymentId);
     const { applyAccessChange } = await import("./payments.server");
@@ -61,10 +61,10 @@ export const publishDrafts = createServerFn({ method: "POST" })
         const table = d.entity === "module" ? "modules" : "lessons";
         if (!d.entity_id) continue;
         if (d.action === "delete") res = await sb.from(table).delete().eq("id", d.entity_id);
-        else res = await sb.from(table).upsert({ id: d.entity_id, ...pick(p, d.entity === "module" ? MODULE_KEYS : LESSON_KEYS) }, { onConflict: "id" });
+        else res = await sb.from(table).upsert({ id: d.entity_id, ...pick(p, d.entity === "module" ? MODULE_KEYS : LESSON_KEYS) } as never, { onConflict: "id" });
       } else if (d.entity.startsWith("site_setting:")) {
         const key = d.entity.slice("site_setting:".length);
-        res = await sb.from("site_settings").upsert({ key, value: p.value ?? {}, updated_at: new Date().toISOString() }, { onConflict: "key" });
+        res = await sb.from("site_settings").upsert({ key, value: (p["value"] ?? {}) as never, updated_at: new Date().toISOString() }, { onConflict: "key" });
       }
       if (res.error) errors.push(`${d.entity}: ${res.error.message}`);
     }

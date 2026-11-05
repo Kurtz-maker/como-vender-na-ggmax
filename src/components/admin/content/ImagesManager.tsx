@@ -56,7 +56,7 @@ export function ImagesManager() {
   async function remove(path: string) {
     if (!confirm("Excluir esta imagem? Se ela estiver em uso no curso, o lugar ficará vazio.")) return;
     const { error } = await supabase.storage.from(BUCKET).remove([path]);
-    if (error) return toast.error("Não foi possível excluir.");
+    if (error) { toast.error("Não foi possível excluir."); return; }
     await audit("image_delete", "image", path);
     refresh();
   }

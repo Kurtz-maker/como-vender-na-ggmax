@@ -19,12 +19,12 @@ function Field({ label, children, className }: { label: string; children: ReactN
 
 export function TextsEditor() {
   const { settings, setSetting } = useDrafts();
-  const hero = { ...DEFAULT_HERO, ...((settings.hero as Partial<Hero>) ?? {}) };
-  const texts = { ...DEFAULT_TEXTS, ...((settings.texts as Partial<LandingTexts>) ?? {}) };
-  const banner: Banner = { active: false, text: "", ...((settings.banner as Partial<Banner>) ?? {}) };
-  const faq = (settings.faq as Faq | undefined) ?? [];
-  const support: Support = { url: null, ...((settings.support as Partial<Support>) ?? {}) };
-  const accent = ((settings.theme as { accent?: Accent } | undefined)?.accent ?? "green") as Accent;
+  const hero = { ...DEFAULT_HERO, ...((settings["hero"] as Partial<Hero>) ?? {}) };
+  const texts = { ...DEFAULT_TEXTS, ...((settings["texts"] as Partial<LandingTexts>) ?? {}) };
+  const banner: Banner = { active: false, text: "", ...((settings["banner"] as Partial<Banner>) ?? {}) };
+  const faq = (settings["faq"] as Faq | undefined) ?? [];
+  const support: Support = { url: null, ...((settings["support"] as Partial<Support>) ?? {}) };
+  const accent = ((settings["theme"] as { accent?: Accent } | undefined)?.accent ?? "green") as Accent;
 
   const setHero = (p: Partial<Hero>) => setSetting("hero", { ...hero, ...p });
   const setTexts = (p: Partial<LandingTexts>) => setSetting("texts", { ...texts, ...p });
@@ -99,7 +99,7 @@ export function TextsEditor() {
       <AccordionItem value="faq" className="card-surface border-b-0 px-5">
         <AccordionTrigger>Perguntas frequentes</AccordionTrigger>
         <AccordionContent className="space-y-4">
-          <ListEditor items={faq} onChange={(v) => setSetting("faq", v)} create={() => ({ q: "", a: "" })} addLabel="Adicionar pergunta"
+          <ListEditor<Faq[number]> items={faq} onChange={(v) => setSetting("faq", v)} create={() => ({ q: "", a: "" })} addLabel="Adicionar pergunta"
             render={(f, update) => (
               <div className="space-y-2">
                 <Input value={f.q} placeholder="Pergunta" onChange={(e) => update({ ...f, q: e.target.value })} />

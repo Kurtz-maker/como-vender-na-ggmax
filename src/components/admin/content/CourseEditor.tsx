@@ -24,7 +24,9 @@ function reorder<T extends { id: string; sort_order: number }>(list: T[], i: num
   const j = i + d;
   if (j < 0 || j >= list.length) return [];
   const next = [...list];
-  [next[i], next[j]] = [next[j], next[i]];
+  const a = next[i]!, b = next[j]!;
+  next[i] = b;
+  next[j] = a;
   return next.map((x, k) => ({ id: x.id, sort_order: k + 1, changed: x.sort_order !== k + 1 })).filter((x) => x.changed);
 }
 

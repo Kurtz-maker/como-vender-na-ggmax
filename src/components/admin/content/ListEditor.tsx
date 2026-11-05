@@ -20,7 +20,9 @@ export function ListEditor<T>({
     const j = i + d;
     if (j < 0 || j >= items.length) return;
     const next = [...items];
-    [next[i], next[j]] = [next[j], next[i]];
+    const a = next[i]!, b = next[j]!;
+  next[i] = b;
+  next[j] = a;
     onChange(next);
   };
   return (

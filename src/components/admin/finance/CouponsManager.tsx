@@ -48,11 +48,11 @@ export function CouponsManager({ coupons, payments, plans }: { coupons: Coupon[]
       updated_at: new Date().toISOString(),
     };
     const problem = validateCoupon(row);
-    if (problem) return toast.error(problem);
+    if (problem) { toast.error(problem); return; }
     setSaving(true);
     const res = form.id ? await supabase.from("coupons").update(row).eq("id", form.id).select("id").single() : await supabase.from("coupons").insert(row).select("id").single();
     setSaving(false);
-    if (res.error) return toast.error(res.error.code === "23505" ? "Já existe um cupom com esse código." : "Não foi possível salvar o cupom.");
+    if (res.error) { toast.error(res.error.code === "23505" ? "Já existe um cupom com esse código." : "Não foi possível salvar o cupom."); return; }
     await audit(form.id ? "coupon_update" : "coupon_create", "coupon", res.data.id, { ...row });
     toast.success("Cupom salvo.");
     setForm(null);
@@ -61,16 +61,16 @@ export function CouponsManager({ coupons, payments, plans }: { coupons: Coupon[]
 
   async function toggle(c: Coupon, active: boolean) {
     const { error } = await supabase.from("coupons").update({ active, updated_at: new Date().toISOString() }).eq("id", c.id);
-    if (error) return toast.error("Não foi possível alterar o cupom.");
+    if (error) { toast.error("Não foi possível alterar o cupom."); return; }
     await audit("coupon_toggle", "coupon", c.id, { active });
     refresh();
   }
 
   async function remove(c: Coupon) {
-    if (payments.some((p) => p.coupon_id === c.id)) return toast.error("Este cupom já foi usado em vendas. Desative-o em vez de excluir, para manter o histórico.");
+    if (payments.some((p) => p.coupon_id === c.id)) { toast.error("Este cupom já foi usado em vendas. Desative-o em vez de excluir, para manter o histórico."); return; }
     if (!confirm(`Excluir o cupom ${c.automatic ? c.name : c.code}?`)) return;
     const { error } = await supabase.from("coupons").delete().eq("id", c.id);
-    if (error) return toast.error("Não foi possível excluir o cupom.");
+    if (error) { toast.error("Não foi possível excluir o cupom."); return; }
     await audit("coupon_delete", "coupon", c.id, { code: c.code });
     refresh();
   }
