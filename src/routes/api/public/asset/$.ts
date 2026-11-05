@@ -14,7 +14,7 @@ export const Route = createFileRoute("/api/public/asset/$")({
         return new Response(data, {
           headers: {
             "content-type": data.type || "application/octet-stream",
-            "cache-control": "public, max-age=3600",
+            "cache-control": "public, max-age=60",
           },
         });
       },

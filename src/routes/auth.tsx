@@ -20,6 +20,9 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+// A purchase started on the home page resumes there after signing in.
+const afterLogin = () => (sessionStorage.getItem("buy_plan") ? "/" : "/aluno");
+
 function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"in" | "up">("in");
@@ -44,7 +47,7 @@ function AuthPage() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       setLoading(false);
       if (error) { toast.error("E-mail ou senha inválidos."); return; }
-      navigate({ to: "/aluno" });
+      navigate({ to: afterLogin() });
     }
   }
 
@@ -52,7 +55,7 @@ function AuthPage() {
     const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" });
     if (r.error) { toast.error("Não foi possível entrar com Google."); return; }
     if (r.redirected) return;
-    navigate({ to: "/aluno" });
+    navigate({ to: afterLogin() });
   }
 
   return (
