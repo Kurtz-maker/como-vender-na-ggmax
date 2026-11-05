@@ -134,7 +134,7 @@ function GatewayCard({ gateway, status, others }: { gateway: Gateway; status: St
         <div className="space-y-4">
           <div className="space-y-2 rounded-xl border border-border p-4">
             <p className="text-sm font-semibold">Webhook de confirmação</p>
-            <p className="text-xs text-muted-foreground">No Mercado Pago, vá em Suas integrações → sua aplicação → Webhooks, cole este endereço, marque o evento "Pagamentos" e copie a assinatura secreta para o campo ao lado.</p>
+            <p className="text-xs text-muted-foreground">No Mercado Pago, vá em Suas integrações → sua aplicação → Webhooks, cole este endereço, marque o evento "Pagamentos" e copie a assinatura secreta para o campo ao lado. Copie o endereço com o painel aberto no site publicado, não na prévia.</p>
             <div className="flex gap-2">
               <Input readOnly value={webhookUrl} className="font-mono text-xs" />
               <Button size="icon" variant="glass" aria-label="Copiar endereço" onClick={() => { navigator.clipboard.writeText(webhookUrl); toast.success("Endereço copiado"); }}><Copy /></Button>
