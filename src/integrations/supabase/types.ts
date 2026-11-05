@@ -201,6 +201,8 @@ export type Database = {
           content: Json
           created_at: string
           id: string
+          image_url: string | null
+          is_free: boolean
           module_id: string
           published: boolean
           sort_order: number
@@ -211,6 +213,8 @@ export type Database = {
           content?: Json
           created_at?: string
           id?: string
+          image_url?: string | null
+          is_free?: boolean
           module_id: string
           published?: boolean
           sort_order?: number
@@ -221,6 +225,8 @@ export type Database = {
           content?: Json
           created_at?: string
           id?: string
+          image_url?: string | null
+          is_free?: boolean
           module_id?: string
           published?: boolean
           sort_order?: number
@@ -298,6 +304,35 @@ export type Database = {
             columns: ["payment_id"]
             isOneToOne: false
             referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_gateway_secrets: {
+        Row: {
+          access_token: string | null
+          gateway_id: string
+          updated_at: string
+          webhook_secret: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          gateway_id: string
+          updated_at?: string
+          webhook_secret?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          gateway_id?: string
+          updated_at?: string
+          webhook_secret?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_gateway_secrets_gateway_id_fkey"
+            columns: ["gateway_id"]
+            isOneToOne: true
+            referencedRelation: "payment_gateways"
             referencedColumns: ["id"]
           },
         ]
@@ -410,8 +445,12 @@ export type Database = {
           description: string | null
           featured: boolean
           features: Json
+          image_url: string | null
           name: string
           price_cents: number | null
+          promo_ends_at: string | null
+          promo_price_cents: number | null
+          promo_starts_at: string | null
           slug: Database["public"]["Enums"]["plan_tier"]
           updated_at: string
         }
@@ -424,8 +463,12 @@ export type Database = {
           description?: string | null
           featured?: boolean
           features?: Json
+          image_url?: string | null
           name: string
           price_cents?: number | null
+          promo_ends_at?: string | null
+          promo_price_cents?: number | null
+          promo_starts_at?: string | null
           slug: Database["public"]["Enums"]["plan_tier"]
           updated_at?: string
         }
@@ -438,8 +481,12 @@ export type Database = {
           description?: string | null
           featured?: boolean
           features?: Json
+          image_url?: string | null
           name?: string
           price_cents?: number | null
+          promo_ends_at?: string | null
+          promo_price_cents?: number | null
+          promo_starts_at?: string | null
           slug?: Database["public"]["Enums"]["plan_tier"]
           updated_at?: string
         }
